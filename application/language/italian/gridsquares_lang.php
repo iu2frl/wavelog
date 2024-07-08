@@ -2,36 +2,36 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['gridsquares_gridsquare_map'] = 'Gridsquare Map';
-$lang['gridsquares_activated_gridsquare_map'] = "Activated Gridsquare Map";
-$lang['gridsquares_gridsquare_activators'] = "Gridsquare Activators";
+$lang['gridsquares_gridsquare_map'] = 'Mappa delle Gridsquare';
+$lang['gridsquares_activated_gridsquare_map'] = 'Mappa delle Gridsquare attivate';
+$lang['gridsquares_gridsquare_activators'] = 'Attivatori di Gridsquare';
 
-$lang['gridsquares_confirmed_is_green'] = 'Confirmed is Green';
-$lang['gridsquares_worked_but_not_confirmed_is_red'] = 'Worked but not confirmed is Red';
-$lang['gridsquares_activated_but_not_confirmed_is_red'] = 'Activated but not confirmed is Red';
+$lang['gridsquares_confirmed_is_green'] = 'Confermato è Verde';
+$lang['gridsquares_worked_but_not_confirmed_is_red'] = 'Lavorato ma non confermato è Rosso';
+$lang['gridsquares_activated_but_not_confirmed_is_red'] = 'Attivato ma non confermato è Rosso';
 
-$lang['gridsquares_this_map_does_not_include_satellite_internet_or_repeater_qsos'] = 'This map does not include satellite, internet or repeater QSOs';
+$lang['gridsquares_this_map_does_not_include_satellite_internet_or_repeater_qsos'] = 'Questa mappa non include QSO via satellite, internet o ripetitore';
 
-$lang['gridsquares_grid_squares'] = 'grid square';
-$lang['gridsquares_total_count'] = 'Total count';
-$lang['gridsquares_orbit'] = "Orbit";
+$lang['gridsquares_grid_squares'] = 'Gridsquare';
+$lang['gridsquares_total_count'] = 'Conteggio totale';
+$lang['gridsquares_orbit'] = 'Orbita';
 
-$lang['gridsquares_minimum_count'] = "Minimum Count";
-$lang['gridsquares_show_qsos'] = "Show QSO's";
-$lang['gridsquares_show_map'] = "Show Map";
-$lang['gridsquares_band'] = 'Band';
-$lang['gridsquares_mode'] = 'Mode';
+$lang['gridsquares_minimum_count'] = 'Conteggio minimo';
+$lang['gridsquares_show_qsos'] = 'Mostra QSO';
+$lang['gridsquares_show_map'] = 'Mostra Mappa';
+$lang['gridsquares_band'] = 'Banda';
+$lang['gridsquares_mode'] = 'Modo';
 $lang['gridsquares_sat'] = 'Satellite';
-$lang['gridsquares_confirmation'] = 'Confirmation';
+$lang['gridsquares_confirmation'] = 'Conferma';
 
 $lang['gridsquares_button_plot'] = 'Plot';
-$lang['gridsquares_button_clear_markers'] = "Clear Markers";
+$lang['gridsquares_button_clear_markers'] = 'Cancella Marcatori';
 
-$lang['gridsquares_gridsquares'] = 'Gridsquares';
-$lang['gridsquares_gridsquares_worked'] = 'Gridsquares worked';
-$lang['gridsquares_gridsquares_confirmed'] = 'Gridsquares confirmed';
-$lang['gridsquares_gridsquares_lotw'] = 'Gridsquares confirmed on LoTW';
-$lang['gridsquares_gridsquares_paper'] = 'Gridsquares confirmed by paper QSL';
-$lang['gridsquares_gridsquares_not_confirmed'] = 'Gridsquares not confirmed';
-$lang['gridsquares_gridsquares_total_worked'] = 'Total gridsquares worked';
-$lang['gridsquares_gridsquares_total_activated'] = 'Total gridsquares activated';
+$lang['gridsquares_gridsquares'] = 'Gridsquare';
+$lang['gridsquares_gridsquares_worked'] = 'Gridsquare lavorate';
+$lang['gridsquares_gridsquares_confirmed'] = 'Gridsquare confermate';
+$lang['gridsquares_gridsquares_lotw'] = 'Gridsquare confermate su LoTW';
+$lang['gridsquares_gridsquares_paper'] = 'Gridsquare confermate con QSL cartacea';
+$lang['gridsquares_gridsquares_not_confirmed'] = 'Gridsquare non confermate';
+$lang['gridsquares_gridsquares_total_worked'] = 'Totale gridsquare lavorate';
+$lang['gridsquares_gridsquares_total_activated'] = 'Totale gridsquare attivate';
