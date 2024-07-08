@@ -22,7 +22,7 @@ $lang['lotw_status'] = 'Stato';
 $lang['lotw_options'] = 'Opzioni';
 $lang['lotw_valid'] = 'Valido';
 $lang['lotw_expired'] = 'Scaduto';
-$lang['lotw_expiring'] = 'Expiring';
+$lang['lotw_expiring'] = 'In scadenza';
 $lang['lotw_not_synced'] = 'Non Sincronizzato';
 
 $lang['lotw_certificate_dxcc'] = 'Certificato DXCC';
@@ -34,9 +34,9 @@ $lang['lotw_upload_exported_adif_file_from_lotw'] = 'Carica il file ADIF Esporta
 $lang['lotw_upload_type_must_be_adi'] = 'I file di log devono essere di tipo .adi';
 
 $lang['lotw_pull_lotw_data_for_me'] = 'Ottieni dati da LoTW per me';
-$lang['lotw_select_callsign'] = 'Select callsign to pull LoTW confirmations for';
+$lang['lotw_select_callsign'] = 'Seleziona nominativo per ottenere le conferme LoTW';
 
-$lang['lotw_report_download_overview_helptext'] ='Wavelog userà il nome utente e password LoTW memorizzato nel tuo profilo per scaricare un report da LoTW per te. Il report scaricato da Wavelog avrà tutte le conferme fino alla data scelta, o fino alla ultima conferma su LoTW (recuperato dal tuo log), fino ad ora.';
+$lang['lotw_report_download_overview_helptext'] = 'Wavelog userà il nome utente e password LoTW memorizzato nel tuo profilo per scaricare un report da LoTW per te. Il report scaricato da Wavelog avrà tutte le conferme fino alla data scelta, o fino alla ultima conferma su LoTW (recuperato dal tuo log), fino ad ora.';
 
 // Buttons
 $lang['lotw_btn_lotw_import'] = 'Importa LoTW';
@@ -55,12 +55,12 @@ $lang['lotw_p12_export_step_four'] = 'Carica file qui sotto.';
 $lang['lotw_confirmed'] = 'Questo QSO è confermato su LoTW';
 
 // LoTW Expiry
-$lang['lotw_cert_expiring'] = 'At least one of your LoTW certificates is about to expire!';
-$lang['lotw_cert_expired'] = 'At least one of your LoTW certificates is expired!';
+$lang['lotw_cert_expiring'] = 'Almeno uno dei tuoi certificati LoTW sta per scadere!';
+$lang['lotw_cert_expired'] = 'Almeno uno dei tuoi certificati LoTW è scaduto!';
 
 // Lotw User
-$lang['lotw_user'] = 'This station uses LoTW.';
-$lang['lotw_last_upload'] = 'Last upload';
+$lang['lotw_user'] = 'Questa stazione usa LoTW.';
+$lang['lotw_last_upload'] = 'Ultimo caricamento';
 
 // Upload folder permissions
-$lang['lotw_upload_folder_permissions'] = 'Upload folder is not writable. Please contact your admin.';
+$lang['lotw_upload_folder_permissions'] = 'La cartella di caricamento non è scrivibile. Contatta l\'amministratore.';
