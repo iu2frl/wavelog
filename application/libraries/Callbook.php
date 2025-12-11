@@ -90,17 +90,21 @@ class Callbook {
 			$this->ci->load->library('qrzcq');
 		}
 
-		if (!$this->ci->session->userdata('qrzcq_session_key')) {
-			$result = $this->ci->qrzcq->session($username, $password);
-			if ($result[0] == 0) {
-				$this->ci->session->set_userdata('qrzcq_session_key', $result[1]);
-			} else {
-				$data['error'] = __("QRZCQ Error").": ".$result[1];
-				return $data;
+		$scraper_mode = (null !== $this->ci->config->item('qrzcq_scraper')) ? $this->ci->config->item('qrzcq_scraper') : false;
+
+		if (!$scraper_mode) {
+			if (!$this->ci->session->userdata('qrzcq_session_key')) {
+				$result = $this->ci->qrzcq->session($username, $password);
+				if ($result[0] == 0) {
+					$this->ci->session->set_userdata('qrzcq_session_key', $result[1]);
+				} else {
+					$data['error'] = __("QRZCQ Error") . ": " . $result[1];
+					return $data;
+				}
 			}
 		}
 
-		$callbook = $this->ci->qrzcq->search($callsign, $this->ci->session->userdata('qrzcq_session_key'));
+		$callbook = $this->ci->qrzcq->search($callsign, $this->ci->session->userdata('qrzcq_session_key'), false, $scraper_mode);
 
 		if ($callbook['error'] ?? '' == 'Invalid session key') {
 			$qrzcq_session_key = $this->ci->qrzcq->session($username, $password);
