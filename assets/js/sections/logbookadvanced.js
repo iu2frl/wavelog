@@ -1040,6 +1040,49 @@ $(document).ready(function () {
 		$('#exportAdif').prop("disabled", false);
 	});
 
+	$('#exportEdi').click(function (event) {
+		$('#exportEdi').prop("disabled", true);
+		const id_list = getSelectedIdsForMap();
+
+		xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				var a;
+				if (xhttp.readyState === 4 && xhttp.status === 200) {
+					// Trick for making downloadable link
+					a = document.createElement('a');
+					a.href = window.URL.createObjectURL(xhttp.response);
+					// Give filename you wish to download
+					a.download = "logbook_export.EDI";
+					a.style.display = 'none';
+					document.body.appendChild(a);
+					a.click();
+				}
+			};
+
+		if (id_list.length > 0) {
+			reverse = false;
+			// Post data to URL which handles post request
+			xhttp.open("POST", site_url+'/logbookadvanced/export_to_edi', true);
+			if(event.shiftKey) {
+				reverse = true;
+			}
+			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			// You should set responseType as blob for binary responses
+			xhttp.responseType = 'blob';
+			xhttp.send("id=" + JSON.stringify(id_list, null, 2)+"&sortcolumn=" +$('#sortcolumn').val()+"&sortdirection=" +$('#sortdirection').val()+"&reverse="+reverse);
+		} else {
+
+			// Post data to URL which handles post request
+			xhttp.open("POST", site_url+'/logbookadvanced/export_to_edi_params', true);
+			xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			// You should set responseType as blob for binary responses
+
+			xhttp.responseType = 'blob';
+			xhttp.send($('#searchForm').serialize()+"&de=" +$("#de").val());
+		}
+		$('#exportEdi').prop("disabled", false);
+	});
+
 	$('#queueBureau').click(function (event) {
 		handleQsl('Q','B', 'queueBureau');
 	});
