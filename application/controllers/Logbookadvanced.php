@@ -253,6 +253,39 @@ class Logbookadvanced extends CI_Controller {
 		$this->load->view('adif/data/exportall', $data);
 	}
 
+	function export_to_edi() {
+		if(!clubaccess_check(9)) return;
+
+		ini_set('memory_limit', '-1');
+		set_time_limit(0);
+		$this->load->model('logbookadvanced_model');
+
+		$ids = xss_clean($this->input->post('id'));
+		$sortcolumn = xss_clean($this->input->post('sortcolumn'));
+		$sortdirection = xss_clean($this->input->post('sortdirection'));
+		$user_id = (int)$this->session->userdata('user_id');
+
+		$data['reverse'] = (xss_clean($this->input->post('reverse')) == "true") ? true : false;
+		$data['qsos'] = $this->logbookadvanced_model->getQsosForEdi($ids, $user_id, $sortcolumn, $sortdirection);
+
+		$this->load->view('edi/data/exportall', $data);
+	}
+
+	function export_to_edi_params() {
+		if(!clubaccess_check(9)) return;
+
+		ini_set('memory_limit', '-1');
+		set_time_limit(0);
+		$this->load->model('logbookadvanced_model');
+
+		$postdata = $this->mapParameters();
+		$postdata['de'] = explode(',', $postdata['de']); // The reason for doing this different, is that the parameter is sent in differently than the regular search
+		$postdata['qsoresults'] = 'All'; // We want all the QSOs regardless of what is set in the qsoresults, to be able to export all QSOs with the filter critera
+		$data['qsos'] = $this->logbookadvanced_model->getSearchResult($postdata);
+
+		$this->load->view('edi/data/exportall', $data);
+	}
+
 	function update_qsl() {
 		if(!clubaccess_check(9)) return;
 

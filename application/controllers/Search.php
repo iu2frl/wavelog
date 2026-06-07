@@ -79,6 +79,12 @@ class Search extends CI_Controller {
 		$this->load->view('adif/data/exportall', $data);
 	}
 
+	function export_to_edi() {
+		$sstring = str_replace('Ø', "0", $this->input->post("search", TRUE) ?? '');
+		$data['qsos'] = $this->fetchQueryResult($sstring, FALSE);
+		$this->load->view('edi/data/exportall', $data);
+	}
+
 	function export_stored_query_to_adif() {
 		$this->db->where('id', xss_clean($this->input->post('id')));
 		$sql = $this->db->get('queries')->result();

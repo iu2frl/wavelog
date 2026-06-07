@@ -840,6 +840,66 @@ class Logbookadvanced_model extends CI_Model {
 		return $this->db->query($sql, $binding);
     }
 
+	public function getQsosForEdi($ids, $user_id, $sortColumnVar = 'qsotime', $sortDirection = 'desc') : object {
+		$binding = [$user_id];
+        $conditions[] = "COL_PRIMARY_KEY in ?";
+        $binding[] = json_decode($ids, true);
+
+		$where = trim(implode(" AND ", $conditions));
+		if ($where != "") {
+			$where = "AND $where";
+		}
+
+		$sortorder = '';
+
+		$sortColumnVar = '';
+		$sortDirection = $sortDirection === 'asc' ? 'asc' : 'desc';
+
+		if ($sortColumnVar !== '') {
+			switch($sortColumnVar) {
+				case 'qsotime':
+					$sortColumn = 'qsos.COL_TIME_ON';
+					break;
+				case 'band':
+					$sortColumn = 'qsos.COL_BAND';
+					break;
+				case 'mode':
+					$sortColumn = 'qsos.COL_MODE';
+					break;
+				case 'qsomodified':
+					$sortColumn = 'qsos.last_modified';
+					break;
+				default:
+					$sortColumn = 'qsos.COL_TIME_ON';
+			}
+
+			$secondarySort = $sortDirection === 'asc' ? 'asc' : 'desc';
+			$sortorder .= " ORDER BY $sortColumn $sortDirection";
+
+			// Add secondary sorts for mode column
+			if ($sortDirection === 'mode') {
+				$sortorder .= ", qsos.COL_SUBMODE $sortDirection";
+			}
+
+			$sortorder .= ", qsos.COL_PRIMARY_KEY $secondarySort";
+		}
+
+		$sql = "
+			SELECT qsos.*, qsos.last_modified AS qso_last_modified, lotw_users.*, station_profile.*, dxcc_entities.name AS station_country, d2.adif as adif, d2.name as dxccname, exists(select 1 from qsl_images where qsoid = qsos.COL_PRIMARY_KEY) as qslcount, coalesce(contest.name, qsos.col_contest_id) as contestname
+			FROM " . $this->config->item('table_name') . " qsos
+			INNER JOIN station_profile ON qsos.station_id = station_profile.station_id
+			LEFT OUTER JOIN dxcc_entities ON qsos.COL_MY_DXCC = dxcc_entities.adif
+			LEFT OUTER JOIN dxcc_entities d2 ON qsos.COL_DXCC = d2.adif
+			LEFT OUTER JOIN lotw_users ON qsos.col_call=lotw_users.callsign
+			LEFT OUTER JOIN contest ON qsos.col_contest_id = contest.adifname
+			WHERE station_profile.user_id =  ?
+			$where
+			$sortorder
+		";
+
+		return $this->db->query($sql, $binding);
+    }
+
 	public function updateQsl($ids, $user_id, $method, $sent) {
 		$this->load->model('user_model');
 
