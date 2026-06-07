@@ -840,7 +840,7 @@ class Logbookadvanced_model extends CI_Model {
 		return $this->db->query($sql, $binding);
     }
 
-	public function getQsosForEdi($ids, $user_id, $sortColumnVar = 'qsotime', $sortDirection = 'desc') : object {
+	public function getQsosForEdi($ids, $user_id) : object {
 		$binding = [$user_id];
         $conditions[] = "COL_PRIMARY_KEY in ?";
         $binding[] = json_decode($ids, true);
@@ -850,39 +850,7 @@ class Logbookadvanced_model extends CI_Model {
 			$where = "AND $where";
 		}
 
-		$sortorder = '';
-
-		$sortColumnVar = '';
-		$sortDirection = $sortDirection === 'asc' ? 'asc' : 'desc';
-
-		if ($sortColumnVar !== '') {
-			switch($sortColumnVar) {
-				case 'qsotime':
-					$sortColumn = 'qsos.COL_TIME_ON';
-					break;
-				case 'band':
-					$sortColumn = 'qsos.COL_BAND';
-					break;
-				case 'mode':
-					$sortColumn = 'qsos.COL_MODE';
-					break;
-				case 'qsomodified':
-					$sortColumn = 'qsos.last_modified';
-					break;
-				default:
-					$sortColumn = 'qsos.COL_TIME_ON';
-			}
-
-			$secondarySort = $sortDirection === 'asc' ? 'asc' : 'desc';
-			$sortorder .= " ORDER BY $sortColumn $sortDirection";
-
-			// Add secondary sorts for mode column
-			if ($sortDirection === 'mode') {
-				$sortorder .= ", qsos.COL_SUBMODE $sortDirection";
-			}
-
-			$sortorder .= ", qsos.COL_PRIMARY_KEY $secondarySort";
-		}
+		$sortorder = " ORDER BY qsos.COL_TIME_ON asc";
 
 		$sql = "
 			SELECT qsos.*, qsos.last_modified AS qso_last_modified, lotw_users.*, station_profile.*, dxcc_entities.name AS station_country, d2.adif as adif, d2.name as dxccname, exists(select 1 from qsl_images where qsoid = qsos.COL_PRIMARY_KEY) as qslcount, coalesce(contest.name, qsos.col_contest_id) as contestname
