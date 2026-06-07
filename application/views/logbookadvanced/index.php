@@ -836,6 +836,7 @@ $options = json_decode($options);
 										<button type="button" class="btn btn-sm btn-warning dropdown-action" id="receivedDirect"><?= __("Received (Direct)"); ?></button>
 										<button type="button" class="btn btn-sm btn-warning dropdown-action" id="receivedElectronic"><?= __("Received (Electronic)"); ?></button>
 										<button type="button" class="btn btn-sm btn-info dropdown-action" id="exportAdif"><?= __("Create ADIF"); ?></button>
+                                        <button type="button" class="btn btn-sm btn-info dropdown-action" id="exportEdi"><?= __("Create EDI"); ?></button>
 										<button type="button" class="btn btn-sm btn-info dropdown-action" id="printLabel"><?= __("Print Label"); ?></button>
 										<button type="button" class="btn btn-sm btn-info dropdown-action" id="qslSlideshow"><?= __("QSL Slideshow"); ?></button>
 										<button type="button" class="btn btn-sm btn-success dropdown-action" id="fixState"><?= __("Fix State"); ?></button>
