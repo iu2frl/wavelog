@@ -261,12 +261,10 @@ class Logbookadvanced extends CI_Controller {
 		$this->load->model('logbookadvanced_model');
 
 		$ids = xss_clean($this->input->post('id'));
-		$sortcolumn = xss_clean($this->input->post('sortcolumn'));
-		$sortdirection = xss_clean($this->input->post('sortdirection'));
 		$user_id = (int)$this->session->userdata('user_id');
 
 		$data['reverse'] = (xss_clean($this->input->post('reverse')) == "true") ? true : false;
-		$data['qsos'] = $this->logbookadvanced_model->getQsosForEdi($ids, $user_id, $sortcolumn, $sortdirection);
+		$data['qsos'] = $this->logbookadvanced_model->getQsosForEdi($ids, $user_id);
 
 		$this->load->view('edi/data/exportall', $data);
 	}
