@@ -1,52 +1,47 @@
 <?php
-	//only set these values if internalrender is not present or false
-	$internalrender = isset($internalrender) ? $internalrender : false;
-	if(!$internalrender) {
-		header('Content-Type: text/plain; charset=utf-8');
-		header('Content-Disposition: attachment; filename="'.$this->session->userdata('user_callsign').'-'.date('Ymd-Hi').'.adi"');
-	}
-$CI =& get_instance();
+//only set these values if internalrender is not present or false
+$internalrender = isset($internalrender) ? $internalrender : false;
+if (!$internalrender) {
+   header('Content-Type: text/plain; charset=utf-8');
+   header('Content-Disposition: attachment; filename="' . $this->session->userdata('user_callsign') . '-' . date('Ymd-Hi') . '.edi"');
+}
+
+$CI = &get_instance();
 if (!$CI->load->is_loaded('EdiHelper')) {
-	$CI->load->library('EdiHelper');
+   $CI->load->library('EdiHelper');
+   try {
+      $CI->EdiHelper = new EdiHelper();
+   } catch (Exception $e) {
+      die("Error loading EdiHelper: " . $e->getMessage());
+   }
 }
 
-echo $CI->EdiHelper->getAdifHeader($CI->config->item('app_name'),$CI->optionslib->get_option('version'), $CI->optionslib->get_option('adif_version'));
+// Specification: https://www.ok2kkw.com/ediformat.htm
+echo $CI->EdiHelper->getEdiHeader();
 
-if (isset($reverse) && $reverse === true) {
    foreach ($qsos->result() as $qso) {
-      if (isset($qso->COL_TIME_ON) && (date('YmdHis',strtotime($qso->COL_TIME_ON)) != '-00011130000000')) {
+      if (isset($qso->COL_TIME_ON) && (date('YmdHis', strtotime($qso->COL_TIME_ON)) != '-00011130000000')) {
          $date_on = strtotime($qso->COL_TIME_ON);
-         $date_on = date('Ymd', $date_on);
-         echo $CI->EdiHelper->getAdifFieldLine("QSO_DATE", $date_on);
-
-         $time_on = date('His', $date_on);
-         echo $CI->EdiHelper->getAdifFieldLine("TIME_ON", $time_on);
-      }
-      echo $CI->EdiHelper->getAdifFieldLine("CALL", $qso->COL_STATION_CALLSIGN);
-      echo $CI->EdiHelper->getAdifFieldLine("MODE", $qso->COL_MODE);
-      echo $CI->EdiHelper->getAdifFieldLine("BAND", $qso->COL_BAND);
-      echo $CI->EdiHelper->getAdifFieldLine("RST_SENT", $qso->COL_RST_RCVD);
-      echo $CI->EdiHelper->getAdifFieldLine("RST_RCVD", $qso->COL_RST_SENT);
-      echo $CI->EdiHelper->getAdifFieldLine("SAT_NAME", $qso->COL_SAT_NAME);
-      echo $CI->EdiHelper->getAdifFieldLine("PROP_MODE", $qso->COL_PROP_MODE);
-      if (str_contains($qso->station_gridsquare, ',')) {
-         echo $CI->EdiHelper->getAdifFieldLine("VUCC_GRIDS", $qso->station_gridsquare);
+         $date = date('Amd', $date_on);
+         $time = date('His', $date_on);
+         echo $date . ";" . $time . ";";
       } else {
-         echo $CI->EdiHelper->getAdifFieldLine("GRIDSQUARE", $qso->station_gridsquare);
+         echo "19700101;000000;";
       }
-      echo $CI->EdiHelper->getAdifFieldLine("SAT_MODE", $qso->COL_SAT_MODE);
-      echo $CI->EdiHelper->getAdifFieldLine("BAND_RX", $qso->COL_BAND_RX);
-      if ($qso->COL_FREQ != 0) {
-         echo $CI->EdiHelper->getAdifFieldLine("FREQ", ($qso->COL_FREQ / 1000000));
-      }
-      if ($qso->COL_FREQ_RX != 0) {
-         echo $CI->EdiHelper->getAdifFieldLine("FREQ_RX", ($qso->COL_FREQ_RX / 1000000));
-      }
-      echo "<EOR>\n\n";
+      echo $qso->COL_STATION_CALLSIGN . ";";
+      echo $CI->EdiHelper->getModeCode($qso->COL_MODE) . ";"; // Mode code
+      echo $qso->COL_RST_SENT . ";";
+      echo $qso->COL_SN_SENT . ";"; // TODO: find how sent serial number is returned from DB
+      echo $qso->COL_RST_RCVD . ";";
+      echo $qso->COL_SN_RCVD . ";"; // TODO: find how received serial number is returned from DB
+      echo ";"; // Received exchange, TODO: find how received exchange is returned from DB
+      echo $qso->station_gridsquare . ";";
+      echo "0;"; // TODO: QSO score here (usually distance?)
+      echo ";"; // New exchange: "" for none, "N" for new
+      echo ";"; // New locator: "" for none, "N" for new
+      echo ";"; // New DXCC: "" for none, "N" for new
+      echo ";"; // Duplicate: "" for none, "D" for duplicate
+      echo "\n";
    }
-} else {
-   foreach ($qsos->result() as $qso) {
-       echo $CI->EdiHelper->getAdifLine($qso);
-   }
-}
-?>
+
+   echo $CI->EdiHelper->getEdiFooter($this->session->userdata('user_callsign'), $this->session->userdata('user_version'));
